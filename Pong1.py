@@ -1,0 +1,124 @@
+import pygame
+from random import randint, random
+
+pygame.init()
+
+WIDTH = 1700
+HEIGHT = 1000
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+
+pygame.display.set_caption('My Game')
+
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
+GREY = (128, 128, 128)
+CYAN = (0, 255, 255)
+
+screen.fill(BLACK)
+pygame.display.update()
+
+radius = 1
+x = WIDTH // 2
+y = HEIGHT // 2
+pygame.draw.circle(screen, WHITE, (x, y),radius)  # Position is the center of the circle.
+
+paddle = {
+    "width": 300,
+    "height": 20,
+    "color": CYAN,
+    "x": 500,
+    "y": HEIGHT - 20
+}
+paddle["x"] = paddle["x"]
+paddle["y"] = HEIGHT - 30
+pygame.draw.rect(screen, paddle["color"],
+                 (paddle["x"], paddle["y"], paddle["width"], paddle["height"]))
+
+speed = 1
+x_sens = y_sens = 1
+pause = False
+
+end = False
+while not end:
+  screen.fill(GREY)
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      end = True
+
+  key = pygame.key.get_pressed()
+
+  if key[pygame.K_SPACE]:
+    pause = True
+
+  if key[pygame.K_RETURN]:
+    pause = False
+
+  if key[pygame.K_o]:
+    print("Key O pressed")
+    print("Mode Auto")
+    auto = True
+
+  if key[pygame.K_m]:
+    print("Key M pressed")
+    print("Mode Manuel")
+    auto = False
+
+  if not pause:
+
+    if paddle["x"] > 0 and key[pygame.K_LEFT]:
+      print("Key LEFT pressed")
+      paddle["x"] = paddle["x"] - 2
+
+    if paddle["x"] < WIDTH-paddle["width"] and key[pygame.K_RIGHT]:
+      print("Key RIGHT pressed")
+      paddle["x"] = paddle["x"] + 2
+
+    if key[pygame.K_UP]:
+        print("Key UP pressed")
+        paddle["y"] += -2
+
+    if key[pygame.K_DOWN]:
+        print("Key DOWN pressed")
+        paddle["y"] += 2
+    # change x direction if the ball hits the left or right edge
+    if x < radius or x > WIDTH - radius:
+      x_sens = -x_sens
+
+    # change y direction if the ball hits the top edge
+    if y < radius:
+      y_sens = -y_sens
+      y += 10
+      radius += 10
+
+
+    # if the ball hits the paddle top
+    if y > paddle["y"]-radius:
+
+      # if the ball is between the x paddle begin and the x paddle end
+      if x > paddle["x"] and x < paddle["x"] + paddle["width"]:
+      # change y direction
+        y_sens = -y_sens
+
+    # if the ball comes out of the screen from below, end the game
+    if y > HEIGHT:
+      end = True
+
+    # compute new ball coordonates
+    x = x + x_sens * speed
+    y = y + y_sens * speed
+
+  # redraw ball and paddle
+  pygame.draw.circle(screen, WHITE, (x, y), radius)
+  pygame.draw.rect(screen, paddle["color"],(paddle["x"], paddle["y"], paddle["width"], paddle["height"]))
+
+  # update screen
+  pygame.display.update()
+  pygame.time.delay(1)
+
+pygame.quit()
+print("Jeux de DE FAVERI SERRE Thomas 1g2")
