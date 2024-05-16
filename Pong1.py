@@ -18,11 +18,12 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 GREY = (128, 128, 128)
 CYAN = (0, 255, 255)
+PINK = (255, 50, 50)
 
 screen.fill(BLACK)
 pygame.display.update()
 
-radius = 1
+radius = 10
 x = WIDTH // 2
 y = HEIGHT // 2
 pygame.draw.circle(screen, WHITE, (x, y),radius)  # Position is the center of the circle.
@@ -45,7 +46,7 @@ pause = False
 
 end = False
 while not end:
-  screen.fill(GREY)
+  screen.fill(BLACK)
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       end = True
@@ -92,8 +93,8 @@ while not end:
     # change y direction if the ball hits the top edge
     if y < radius:
       y_sens = -y_sens
-      y += 10
-      radius += 10
+      y += 1
+      radius += 1
 
 
     # if the ball hits the paddle top
